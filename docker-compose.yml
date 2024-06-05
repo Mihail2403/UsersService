@@ -1,16 +1,16 @@
 services:
   users-service:
     container_name: gochat_users
-    build: ./users-service
+    build: ./
     ports:
       - 8002:8002
     env_file:
-      - ./users-service/.env
+      - .env
     command: sh -c "
       ./migrate -path ./schema -database  postgres://postgres:postgres@db_users:5432/users?sslmode=disable up
       && ./main"
     depends_on:
-      - auth
+      - db_users
 
   db_users:
     container_name: gochat_auth_db
