@@ -1,8 +1,10 @@
 package app
 
 import (
+	"context"
 	"log"
 	"os"
+	"time"
 	"users-service/internal/repository"
 	"users-service/internal/server"
 	"users-service/internal/service"
@@ -30,8 +32,20 @@ func Run() {
 	}
 	defer db.Close()
 
+	mongoCfg := repository.MongoConfig{
+		Host: os.Getenv("MONGO_HOST"),
+		Port: os.Getenv("MONGO_PORT"),
+		DB:   os.Getenv("MONGO_DB"),
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	mongo, err := repository.NewMongoDB(ctx, mongoCfg)
+	if err != nil {
+		log.Fatalf("Error get mongo.Database: %v\n", err)
+	}
+
 	// dependency injection
-	repo := repository.NewRepository(db)
+	repo := repository.NewRepository(db, mongo)
 	service := service.NewService(repo)
 	handler := handler.NewHandler(service)
 

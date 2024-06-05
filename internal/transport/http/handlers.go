@@ -18,5 +18,6 @@ func NewHandler(service *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	r := gin.Default()
+	r.POST("/users", h.CreateUser)
 	return r
 }

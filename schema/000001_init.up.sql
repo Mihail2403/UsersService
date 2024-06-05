@@ -1,8 +1,8 @@
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
-    img TEXT,
+    img_id VARCHAR(24)
     user_id INT
 );
 
--- migrate -path schema/ -database postgres://postgres:postgres@localhost:6543/auth?sslmode=disable up
+-- migrate -path schema/ -database postgres://postgres:postgres@db_users:5432/users?sslmode=disable up

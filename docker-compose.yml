@@ -13,7 +13,7 @@ services:
       - db_users
 
   db_users:
-    container_name: gochat_auth_db
+    container_name: gochat_users_db
     image: postgres:16.2
     environment:
       - POSTGRES_DB=users
@@ -24,5 +24,14 @@ services:
     volumes:
       - users_db:/var/lib/postgresql/data
 
+  mongo_users:
+    container_name: gochat_users_mongo_db
+    image: mongo:8.0-rc
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_users_data:/data/db
+
 volumes:
   users_db:
+  mongo_users_data:

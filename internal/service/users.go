@@ -1,6 +1,9 @@
 package service
 
-import "users-service/internal/repository"
+import (
+	"users-service/entity"
+	"users-service/internal/repository"
+)
 
 type UsersService struct {
 	repo *repository.Repository
@@ -8,4 +11,8 @@ type UsersService struct {
 
 func NewUsersService(repo *repository.Repository) *UsersService {
 	return &UsersService{repo: repo}
+}
+
+func (s *UsersService) Create(user *entity.User) error {
+	return nil
 }
