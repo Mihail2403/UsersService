@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="uploadImage()">Upload Image</button>
+    <img src="" id="img" style="display: block; width: 100px; height: 100px;">
+    <script>
+        function uploadImage() {
+            var img = document.getElementById("img")
+            const imageInput = document.getElementById('imageInput');
+            const file = imageInput.files[0];
+            var reader = new FileReader(file);
+            reader.onload = function(e) {
+                var imageBase64 = e.target.result;
+                console.log(imageBase64);
+                img.src = imageBase64;
+            }
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>

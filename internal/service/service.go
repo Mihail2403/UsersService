@@ -1,6 +1,6 @@
-package repository
+package service
 
-import "github.com/jmoiron/sqlx"
+import "users-service/internal/repository"
 
 type Users interface {
 	// GetAll() ([]entity.User, error)
@@ -11,12 +11,12 @@ type Users interface {
 	// GetByIDArray(ids []int) ([]entity.User, error)
 }
 
-type Repository struct {
+type Service struct {
 	Users
 }
 
-func NewRepository(db *sqlx.DB) *Repository {
-	return &Repository{
-		Users: NewUsersRepo(db),
+func NewService(repo *repository.Repository) *Service {
+	return &Service{
+		Users: NewUsersService(repo),
 	}
 }
