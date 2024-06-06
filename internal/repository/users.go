@@ -14,15 +14,39 @@ func NewUsersRepo(db *sqlx.DB) *UsersRepo {
 	return &UsersRepo{db: db}
 }
 
-type UsersPostgresStruct struct {
-	ID     int    `db:"id"`
-	Name   string `db:"name"`
-	UserID int    `db:"user_id"`
-	ImgID  string `db:"img_id"`
-}
-
 func (r *UsersRepo) Create(user *UsersPostgresStruct) error {
 	query := fmt.Sprintf("INSERT INTO %s (name, user_id, img_id) VALUES ($1, $2, $3)", UsersTable)
 	_, err := r.db.Exec(query, user.Name, user.UserID, user.ImgID)
 	return err
+}
+func (r *UsersRepo) GetAll() ([]UsersPostgresStruct, error) {
+	var users []UsersPostgresStruct
+	query := fmt.Sprintf("SELECT u.id, u.name, u.user_id, u.img_id FROM %s u", UsersTable)
+	err := r.db.Select(&users, query)
+	return users, err
+}
+func (r *UsersRepo) GetByID(id int) (UsersPostgresStruct, error) {
+	var user UsersPostgresStruct
+	query := fmt.Sprintf("SELECT u.id, u.name, u.user_id, u.img_id FROM %s u WHERE u.id=$1", UsersTable)
+	err := r.db.Get(&user, query, id)
+	return user, err
+}
+
+func (r *UsersRepo) Update(user *UsersPostgresStruct) error {
+	query := fmt.Sprintf("UPDATE %s u SET u.name=$1, u.user_id=$2, u.img_id=$3", UsersTable)
+	_, err := r.db.Exec(query, user.Name, user.UserID, user.ImgID)
+	return err
+}
+
+func (r *UsersRepo) Delete(id int) error {
+	query := fmt.Sprintf("DELETE FROM %s u WHERE u.id=$1", UsersTable)
+	_, err := r.db.Exec(query, id)
+	return err
+}
+
+func (r *UsersRepo) GetByIDArray(ids []int) ([]UsersPostgresStruct, error) {
+	var users []UsersPostgresStruct
+	query := fmt.Sprintf("SELECT u.id, u.name, u.user_id, u.img_id FROM %s u WHERE u.id = ANY($1)", UsersTable)
+	err := r.db.Select(&users, query, ids)
+	return users, err
 }

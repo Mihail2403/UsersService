@@ -5,16 +5,22 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+type UsersPostgresStruct struct {
+	ID     int    `db:"id"`
+	Name   string `db:"name"`
+	UserID int    `db:"user_id"`
+	ImgID  string `db:"img_id"`
+}
+
 type Users interface {
-	// GetAll() ([]entity.User, error)
-	// GetByID(id int) (*entity.User, error)
+	GetAll() ([]UsersPostgresStruct, error)
+	GetByID(id int) (UsersPostgresStruct, error)
 	Create(user *UsersPostgresStruct) error
-	// Update(user *entity.User) error
-	// Delete(id int) error
-	// GetByIDArray(ids []int) ([]entity.User, error)
+	Update(user *UsersPostgresStruct) error
+	Delete(id int) error
+	GetByIDArray(ids []int) ([]UsersPostgresStruct, error)
 }
 type Img interface {
-	GetAll() ([]string, error)
 	GetById(id string) (string, error)
 	GetByIDArray(idArr []string) ([]string, error)
 	Create(img string) (string, error)

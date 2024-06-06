@@ -57,25 +57,6 @@ func (r *ImgRepo) GetById(id string) (string, error) {
 	return img.Img, nil
 }
 
-func (r *ImgRepo) GetAll() ([]string, error) {
-	coll := r.db.Collection(IMG_COLLECTION)
-	cursor, err := coll.Find(context.Background(), bson.M{})
-	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(context.Background())
-	var imgs []string
-	for cursor.Next(context.Background()) {
-		var img ImgStruct
-		err = cursor.Decode(&img)
-		if err != nil {
-			return nil, err
-		}
-		imgs = append(imgs, img.Img)
-	}
-	return imgs, nil
-}
-
 func (r *ImgRepo) GetByIDArray(idArr []string) ([]string, error) {
 	coll := r.db.Collection(IMG_COLLECTION)
 	objIdArr := make([]primitive.ObjectID, len(idArr))
