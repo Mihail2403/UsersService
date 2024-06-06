@@ -123,7 +123,7 @@ func (s *UsersService) Delete(id int) error {
 }
 
 func (s *UsersService) Update(id int, user *entity.User) error {
-	pgUsr, err := s.repo.Users.GetByID(user.Id)
+	pgUsr, err := s.repo.Users.GetByID(id)
 	if err != nil {
 		return err
 	}
@@ -134,6 +134,7 @@ func (s *UsersService) Update(id int, user *entity.User) error {
 		}
 	}
 	userForUpdate := &repository.UsersPostgresStruct{
+		Name:  pgUsr.Name,
 		ImgID: pgUsr.ImgID,
 	}
 	if user.Name != "" {

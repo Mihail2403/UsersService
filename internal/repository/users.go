@@ -33,7 +33,7 @@ func (r *UsersRepo) GetByID(id int) (UsersPostgresStruct, error) {
 }
 
 func (r *UsersRepo) Update(id int, user *UsersPostgresStruct) error {
-	query := fmt.Sprintf("UPDATE %s u SET u.name=$1, u.img_id=$2 WHERE u.id=$3", UsersTable)
+	query := fmt.Sprintf("UPDATE %s SET name=$1, img_id=$2 WHERE id=$3", UsersTable)
 	_, err := r.db.Exec(query, user.Name, user.ImgID, id)
 	return err
 }
