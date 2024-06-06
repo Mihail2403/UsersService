@@ -16,7 +16,7 @@ type Users interface {
 	GetAll() ([]UsersPostgresStruct, error)
 	GetByID(id int) (UsersPostgresStruct, error)
 	Create(user *UsersPostgresStruct) error
-	Update(user *UsersPostgresStruct) error
+	Update(id int, user *UsersPostgresStruct) error
 	Delete(id int) error
 	GetByIDArray(ids []int) ([]UsersPostgresStruct, error)
 }

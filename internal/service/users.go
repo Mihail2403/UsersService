@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"log"
 	"users-service/entity"
 	"users-service/internal/repository"
 )
@@ -100,4 +101,44 @@ func (s *UsersService) GetByIDArray(ids []int) ([]entity.User, error) {
 		})
 	}
 	return usersRes, nil
+}
+
+func (s *UsersService) Delete(id int) error {
+	user, err := s.repo.Users.GetByID(id)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	err = s.repo.Img.Delete(user.ImgID)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	err = s.repo.Users.Delete(id)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	return nil
+}
+
+func (s *UsersService) Update(id int, user *entity.User) error {
+	pgUsr, err := s.repo.Users.GetByID(user.Id)
+	if err != nil {
+		return err
+	}
+	if user.ImgBase64 != "" {
+		err = s.repo.Img.Update(pgUsr.ImgID, user.ImgBase64)
+		if err != nil {
+			return err
+		}
+	}
+	userForUpdate := &repository.UsersPostgresStruct{
+		ImgID: pgUsr.ImgID,
+	}
+	if user.Name != "" {
+		userForUpdate.Name = user.Name
+	}
+	err = s.repo.Users.Update(id, userForUpdate)
+	return err
 }
