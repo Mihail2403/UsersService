@@ -14,5 +14,15 @@ func NewUsersService(repo *repository.Repository) *UsersService {
 }
 
 func (s *UsersService) Create(user *entity.User) error {
-	return nil
+	imgId, err := s.repo.Img.Create(user.ImgBase64)
+	if err != nil {
+		return err
+	}
+	pgUsr := &repository.UsersPostgresStruct{
+		Name:   user.Name,
+		UserID: user.UserId,
+		ImgID:  imgId,
+	}
+	err = s.repo.Users.Create(pgUsr)
+	return err
 }

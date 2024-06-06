@@ -14,9 +14,9 @@ type Users interface {
 	// GetByIDArray(ids []int) ([]entity.User, error)
 }
 type Img interface {
-	// GetAll() ([]string, error)
-	// GetByID(id string) (string, error)
-	// GetByIDArray(id []string) ([]string, error)
+	GetAll() ([]string, error)
+	GetById(id string) (string, error)
+	GetByIDArray(idArr []string) ([]string, error)
 	Create(img string) (string, error)
 }
 
