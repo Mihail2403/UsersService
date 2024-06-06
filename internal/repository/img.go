@@ -84,3 +84,24 @@ func (r *ImgRepo) GetByIDArray(idArr []string) ([]string, error) {
 	}
 	return imgs, nil
 }
+func (r *ImgRepo) Update(id, img string) error {
+	coll := r.db.Collection(IMG_COLLECTION)
+	objId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": objId}
+	update := bson.M{"$set": bson.M{"img": img}}
+	_, err = coll.UpdateOne(context.Background(), filter, update)
+	return err
+}
+func (r *ImgRepo) Delete(id string) error {
+	coll := r.db.Collection(IMG_COLLECTION)
+	objId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	filter := bson.M{"_id": objId}
+	_, err = coll.DeleteOne(context.Background(), filter)
+	return err
+}

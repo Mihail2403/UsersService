@@ -24,6 +24,8 @@ type Img interface {
 	GetById(id string) (string, error)
 	GetByIDArray(idArr []string) ([]string, error)
 	Create(img string) (string, error)
+	Update(id, img string) error
+	Delete(id string) error
 }
 
 type Repository struct {
