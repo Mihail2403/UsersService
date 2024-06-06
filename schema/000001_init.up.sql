@@ -1,7 +1,7 @@
-CREATE TABLE users(
+CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     name VARCHAR(255),
-    img_id VARCHAR(24)
+    img_id VARCHAR(24),
     user_id INT
 );
 
